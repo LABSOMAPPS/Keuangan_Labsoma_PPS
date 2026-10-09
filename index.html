@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Keuangan Kantor LABSOMA PPS</title>
+  <title>LABSOMA PPS</title>
   <meta name="robots" content="noindex, nofollow">
   <style>
 
@@ -24,6 +24,22 @@
     .logincard .sub {
       text-align: center;
       width: 100%;
+    }
+
+    header .eyebrow {
+      font-size: 25px;
+      font-weight: 900;
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    header #title {
+      text-align: left;
+      margin-top: 0;
+    }
+
+    .logincard .sub {
+      font-style: italic;
     }
 
     :root{--green:#176b52;--deep:#123c31;--mint:#e8f3ed;--ink:#18312b;--muted:#75817c;--line:#e5ece8;--paper:#f6f8f7;--red:#b44840}
@@ -60,7 +76,7 @@
 
 <div class="loginwrap hidden" id="login">
   <form class="logincard" id="loginForm" autocomplete="on">
-    <div><div class="eyebrow">KEUANGAN KANTOR</div><h1>LABSOMA PPS</h1><div class="sub">Selamat Berkhidmah.</div></div>
+    <div><div class="eyebrow">KEUANGAN KANTOR</div><h1>LABSOMA PPS</h1><div class="sub">"Selamat Berkhidmah"</div></div>
     <div class="field"><label for="lUser">Nama pengguna</label><input id="lUser" name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></div>
     <div class="field"><label for="lPass">Kata sandi</label><input id="lPass" name="password" type="password" autocomplete="current-password" required></div>
     <button class="btn" id="loginBtn">Masuk</button>
@@ -74,7 +90,7 @@
     <div class="foot">Data disimpan di Google Sheets.</div>
   </aside>
   <main>
-    <header><div><div class="eyebrow">KEUANGAN KANTOR LABSOMA PPS</div><h1 id="title">Ringkasan pengeluaran</h1><p id="desc">Rekap berdasarkan Kalender Hijriah Indonesia/Kemenag.</p></div>
+    <header><div><div class="eyebrow">LABSOMA PPS</div><h1 id="title">Ringkasan pengeluaran</h1><p id="desc">Rekap berdasarkan Kalender Hijriah Indonesia/Kemenag.</p></div>
       <div class="hright"><div class="seg" id="scope" role="group" aria-label="Kategori"><button data-scope="ALL" class="on">Semua</button><button data-scope="APB">APB</button><button data-scope="NON APB">NON APB</button></div><select id="hmonth" class="month" aria-label="Bulan Hijriah"></select><input id="hyear" class="month" type="number" min="1300" max="1600" aria-label="Tahun Hijriah" style="width:105px"><button class="btn ghost" id="btnReload" title="Muat ulang data dari server" aria-label="Muat ulang">⟳</button><button class="btn ghost" id="acct">☺ <span id="acctName"></span></button></div></header>
 
     <section id="page-dash" class="page active">
@@ -543,7 +559,7 @@
     return {catatan:catatan,transaksi:transaksi,anggaran:anggaran,pemasukan:pemasukan,rekap:rekap};
   }
   function exportExcel(){
-    var btn=el('btnExport');btn.disabled=true;btn.textContent='Menyiapkan…';
+    var btn=el('btnExport');btn.disabled=true;btn.textContent='Bismilaah...';
     loadXlsx().then(function(){
       var d=buildExport(),wb=XLSX.utils.book_new();
       function add(name,rows,widths,numCols,pctCols){
