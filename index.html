@@ -23,6 +23,12 @@
       font-size: 32px;
       font-weight: 800;
     }
+    .eyebrow,
+    .logincard h1,
+    .logincard .sub {
+      text-align: center;
+      width: 100%;
+    }
     :root{--green:#176b52;--deep:#123c31;--mint:#e8f3ed;--ink:#18312b;--muted:#75817c;--line:#e5ece8;--paper:#f6f8f7;--red:#b44840}
     html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}.app>main{min-width:0}.panel,.card,.scroll{min-width:0;max-width:100%}.scroll{-webkit-overflow-scrolling:touch}.modal{max-height:92vh;overflow:auto}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0}
     .hidden{display:none!important}body:not(.is-admin) .admin-only{display:none!important}
@@ -51,17 +57,17 @@
 </head>
 <body>
 
-<div class="splash" id="boot">Memuat…</div>
+<div class="splash" id="boot">Bismillah...</div>
 
 <div class="loginwrap hidden" id="login">
   <form class="logincard" id="loginForm" autocomplete="on">
-    <div><div class="eyebrow">KEUANGAN KANTOR LABSOMA PPS</div><h1>Masuk</h1><div class="sub">Akun didaftarkan oleh admin.</div></div>
+    <div><div class="eyebrow">KEUANGAN KANTOR</div><h1>LABSOMA PPS</h1><div class="sub">Selamat Berkhidmah.</div></div>
     <div class="field"><label for="lUser">Nama pengguna</label><input id="lUser" name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></div>
     <div class="field"><label for="lPass">Kata sandi</label><input id="lPass" name="password" type="password" autocomplete="current-password" required></div>
     <button class="btn" id="loginBtn">Masuk</button>
     <div class="loginerr" id="loginErr" role="alert"></div>
   </form>
-</div>
+</div> 
 
 <div class="app hidden" id="app">
   <aside class="side"><div class="brand">Keuangan Kantor<small>LABSOMA PPS</small></div>
