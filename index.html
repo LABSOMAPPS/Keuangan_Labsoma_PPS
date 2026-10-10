@@ -100,6 +100,7 @@
     /* ---------- Tables ---------- */
     .scroll{overflow:auto;border-radius:12px}
     table{width:100%;border-collapse:collapse;min-width:650px}
+    table.compact{min-width:0}
     th{text-align:left;font-size:11.5px;font-weight:650;color:var(--muted);padding:10px;border-bottom:1px solid var(--line);background:#f8faf9;white-space:nowrap}
     th:first-child{border-top-left-radius:10px}th:last-child{border-top-right-radius:10px}
     td{font-size:13px;padding:13px 10px;border-bottom:1px solid #edf1ef;vertical-align:middle}
@@ -189,21 +190,29 @@
         <div class="card"><div class="label">Pengeluaran bulan Hijriah ini</div><div class="value" id="spent">Rp0</div><div class="sub" id="count">0 transaksi</div></div>
         <div class="card"><div class="label">Total pengeluaran tercatat</div><div class="value" id="life">Rp0</div><div class="sub" id="lifeSub"></div></div>
         <div class="card click" onclick="goUndated()" title="Lihat transaksi yang belum terekap"><div class="label">Belum terekap di bulan Hijriah</div><div class="value" id="undated">0</div><div class="sub" id="undatedSub">Tidak masuk rekap bulanan</div></div>
-        <div class="card"><div class="label">Total anggaran</div><div class="value" id="tbudget">Rp0</div><div class="sub" id="tbudgetSub"></div></div>
+        <div class="card"><div class="label">Pemasukan bulan Hijriah ini</div><div class="value" id="incm">Rp0</div><div class="sub" id="incmSub"></div></div>
+        <div class="card"><div class="label">Total pemasukan tercatat</div><div class="value" id="inctot">Rp0</div><div class="sub" id="inctotSub"></div></div>
+        <div class="card click" onclick="goUndatedInc()" title="Lihat pemasukan yang belum terekap"><div class="label">Pemasukan belum terekap</div><div class="value" id="incund">0</div><div class="sub" id="incundSub"></div></div>
+        <div class="card"><div class="label">Total anggaran (anggaran + pemasukan)</div><div class="value" id="tbudget">Rp0</div><div class="sub" id="tbudgetSub"></div></div>
         <div class="card"><div class="label">Sisa anggaran</div><div class="value" id="bremain">Rp0</div><div class="sub" id="bremainSub"></div></div>
         <div class="card"><div class="label">Saldo kas (pemasukan − pengeluaran)</div><div class="value" id="saldo">Rp0</div><div class="sub" id="saldoSub"></div></div>
       </div>
       <div class="layout"><section class="panel"><div class="panel-head"><div><h2>Realisasi per rincian</h2><div class="sub">Total pengeluaran dibandingkan dengan anggaran, dikelompokkan per kategori</div></div><button class="btn light" onclick="show('bud')">Anggaran</button></div><div id="bars"></div></section>
         <section class="panel"><div class="panel-head"><div><h2>Transaksi terbaru</h2><div class="sub">Bulan yang dipilih</div></div><button class="btn" onclick="openTx()">+ Catat</button></div><div id="recent"></div></section></div>
+      <div class="layout"><section class="panel"><div class="panel-head"><div><h2>Rekap pemasukan per rincian</h2><div class="sub">Dikelompokkan per kategori: bulan Hijriah terpilih dan total</div></div><button class="btn light" onclick="show('inc')">Pemasukan</button></div><div class="scroll"><table class="compact"><thead><tr><th>Rincian</th><th class="amt">Bulan ini</th><th class="amt">Total</th></tr></thead><tbody id="incRecapDash"></tbody></table></div></section>
+        <section class="panel"><div class="panel-head"><div><h2>Pemasukan terbaru</h2><div class="sub">Bulan yang dipilih</div></div><button class="btn" onclick="openInc()">+ Catat</button></div><div id="recentInc"></div></section></div>
       <section class="panel"><div class="panel-head"><div><h2>Belum terekap di bulan Hijriah</h2><div class="sub" id="unrecSub"></div></div><button class="btn light" onclick="goUndated()">Lihat semua</button></div><div class="scroll"><table><thead><tr><th>Tanggal lama</th><th>Uraian</th><th>Kategori</th><th>Rincian</th><th class="amt">Jumlah</th><th>Aksi</th></tr></thead><tbody id="unrecTable"></tbody></table></div></section>
       <section class="panel"><div class="panel-head"><div><h2>Pengeluaran bulan Hijriah ini</h2><div class="sub">Transaksi bertanggal pada bulan Hijriah yang dipilih</div></div><button class="btn light" onclick="show('tx')">Lihat semua</button></div><div class="scroll"><table><thead><tr><th>Tanggal Hijriah</th><th>Uraian</th><th>Kategori</th><th>Rincian</th><th>Nota / penerima</th><th class="amt">Jumlah</th></tr></thead><tbody id="recentTable"></tbody></table></div></section>
     </section>
 
     <section id="page-tx" class="page"><section class="panel"><div class="panel-head"><div><h2>Daftar pengeluaran</h2><div id="txcount" class="sub"></div></div><button class="btn" onclick="openTx()">+ Catat pengeluaran</button></div><div class="toolbar"><input id="search" placeholder="Cari uraian, rincian, nota…"><select id="catFilter"><option value="">Semua rincian</option></select><select id="dateFilter"><option value="">Semua tanggal</option><option value="undated">Belum terekap (tanpa tanggal Hijriah)</option><option value="nokat">Tanpa kategori APB/NON APB</option></select><button class="btn ghost" onclick="resetFilter()">Reset</button><button class="btn light" style="margin-left:auto; border: 1px solid var(--green);" onclick="exportExcel()" id="btnExport">⬇ Ekspor Excel</button></div><div id="oldHint" class="hint" style="display:none"></div><div class="scroll"><table><thead><tr><th>Tanggal Hijriah</th><th>Uraian</th><th>Kategori</th><th>Rincian</th><th>Nota / penerima</th><th>Kanal</th><th class="amt">Jumlah</th><th>Aksi</th></tr></thead><tbody id="txTable"></tbody></table></div></section></section>
 
-    <section id="page-inc" class="page"><section class="panel"><div class="panel-head"><div><h2>Daftar pemasukan</h2><div id="inccount" class="sub"></div></div><button class="btn" onclick="openInc()">+ Catat pemasukan</button></div><div class="toolbar"><input id="incSearch" placeholder="Cari sumber atau catatan…"><button class="btn ghost" onclick="document.getElementById('incSearch').value='';renderInc()">Reset</button></div><div class="scroll"><table><thead><tr><th>Tanggal Hijriah</th><th>Sumber / uraian</th><th>Kategori</th><th>Catatan</th><th class="amt">Jumlah</th><th>Aksi</th></tr></thead><tbody id="incTable"></tbody></table></div></section></section>
+    <section id="page-inc" class="page">
+      <section class="panel"><div class="panel-head"><div><h2>Rekap pemasukan</h2><div class="sub" id="incRecapSub">Per kategori dan rincian</div></div></div><div class="scroll"><table><thead><tr><th>Rincian</th><th class="amt">Transaksi</th><th class="amt">Bulan Hijriah ini</th><th class="amt">Total pemasukan</th></tr></thead><tbody id="incRecapTable"></tbody><tfoot id="incRecapFoot"></tfoot></table></div></section>
+      <section class="panel"><div class="panel-head"><div><h2>Daftar pemasukan</h2><div id="inccount" class="sub"></div></div><button class="btn" onclick="openInc()">+ Catat pemasukan</button></div><div class="toolbar"><input id="incSearch" placeholder="Cari uraian, rincian, diterima dari…"><select id="incCatFilter"><option value="">Semua rincian</option></select><select id="incDateFilter"><option value="">Semua tanggal</option><option value="undated">Belum terekap (tanpa tanggal Hijriah)</option><option value="nokat">Tanpa kategori APB/NON APB</option></select><button class="btn ghost" onclick="resetIncFilter()">Reset</button></div><div class="scroll"><table><thead><tr><th>Tanggal Hijriah</th><th>Uraian</th><th>Kategori</th><th>Rincian</th><th>Diterima dari</th><th>Kanal</th><th class="amt">Jumlah</th><th>Aksi</th></tr></thead><tbody id="incTable"></tbody></table></div></section>
+    </section>
 
-    <section id="page-bud" class="page"><section class="panel"><div class="panel-head"><div><h2>Anggaran per kategori dan rincian</h2><div class="sub">Realisasi memakai seluruh transaksi tercatat pada kategori dan rincian yang sama.</div></div><button class="btn admin-only" onclick="openBudget()">+ Rincian</button></div><div id="budNote" class="hint" style="display:none"></div><div class="scroll"><table><thead><tr><th>Rincian</th><th class="amt">Anggaran</th><th class="amt">Realisasi tercatat</th><th class="amt">Sisa</th><th class="amt">%</th><th class="admin-only">Aksi</th></tr></thead><tbody id="budgetTable"></tbody><tfoot id="budgetFoot"></tfoot></table></div></section></section>
+    <section id="page-bud" class="page"><section class="panel"><div class="panel-head"><div><h2>Anggaran per kategori dan rincian</h2><div class="sub">Total anggaran = anggaran awal + pemasukan pada kategori dan rincian yang sama. Realisasi memakai seluruh pengeluaran tercatat.</div></div><button class="btn admin-only" onclick="openBudget()">+ Rincian</button></div><div id="budNote" class="hint" style="display:none"></div><div class="scroll"><table><thead><tr><th>Rincian</th><th class="amt">Anggaran awal</th><th class="amt">Pemasukan</th><th class="amt">Total anggaran</th><th class="amt">Realisasi tercatat</th><th class="amt">Sisa</th><th class="amt">%</th><th class="admin-only">Aksi</th></tr></thead><tbody id="budgetTable"></tbody><tfoot id="budgetFoot"></tfoot></table></div></section></section>
 
     <section id="page-usr" class="page"><section class="panel"><div class="panel-head"><div><h2>Pengguna</h2><div class="sub">Admin mendaftarkan akun. Staf dapat mencatat dan mengubah transaksi; hapus data, anggaran, dan pengguna hanya untuk admin.</div></div><button class="btn" onclick="openUser()">+ Tambah pengguna</button></div><div class="scroll"><table><thead><tr><th>Nama</th><th>Nama pengguna</th><th>Peran</th><th>Status</th><th>Dibuat</th><th>Aksi</th></tr></thead><tbody id="usrTable"></tbody></table></div></section></section>
   </main>
@@ -211,38 +220,7 @@
 
 <div class="backdrop" id="txModal"><div class="modal"><h2 id="modalTitle">Catat pengeluaran</h2><form id="txForm"><input type="hidden" name="id"><input type="hidden" name="oldDate"><div class="form"><div class="field"><label>Tanggal Hijriah *</label><select name="hijriDay" required id="hday"></select></div><div class="field"><label>Bulan Hijriah *</label><select name="hijriMonth" required id="formHmonth"></select></div><div class="field"><label>Tahun Hijriah *</label><input name="hijriYear" type="number" min="1300" max="1600" required></div><div class="field"><label>Jumlah (Rp) *</label><input type="number" name="amount" min="1" step="1" required></div><div class="field full"><label>Uraian *</label><input name="description" required maxlength="180"></div><div class="field"><label>Kategori *</label><select name="kategori" id="formKat" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Rincian *</label><select name="rincian" id="formCat" required></select></div><div class="field"><label>Nota / penerima</label><input name="payee" maxlength="120"></div><div class="field"><label>Kanal pembayaran</label><input name="channel" maxlength="80"></div><div class="field full"><label>Catatan</label><input name="note" maxlength="180"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('txModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
 
-<div class="backdrop" id="incModal">
-  <div class="modal">
-    <h2 id="incTitle">Catat pemasukan</h2>
-    <form id="incForm">
-      <input type="hidden" name="id">
-      <div class="form">
-        <div class="field"><label>Tanggal Hijriah *</label><select name="hijriDay" required id="iday"></select></div>
-        <div class="field"><label>Bulan Hijriah *</label><select name="hijriMonth" required id="iMonth"></select></div>
-        <div class="field"><label>Tahun Hijriah *</label><input name="hijriYear" type="number" min="1300" max="1600" required></div>
-        <div class="field"><label>Jumlah (Rp) *</label><input type="number" name="amount" min="1" step="1" required></div>
-        <div class="field">
-          <label>Kategori *</label>
-          <select name="kategori" id="incKat" required>
-            <option value="">Pilih kategori</option>
-            <option value="APB">APB</option>
-            <option value="NON APB">NON APB</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Rincian *</label>
-          <select name="rincian" id="incCat" required></select>
-        </div>
-        <div class="field full"><label>Sumber / uraian *</label><input name="description" required maxlength="180"></div>
-        <div class="field full"><label>Catatan</label><input name="note" maxlength="180"></div>
-      </div>
-      <div class="actions">
-        <button type="button" class="btn ghost" onclick="closeModal('incModal')">Batal</button>
-        <button class="btn">Simpan</button>
-      </div>
-    </form>
-  </div>
-</div>
+<div class="backdrop" id="incModal"><div class="modal"><h2 id="incTitle">Catat pemasukan</h2><form id="incForm"><input type="hidden" name="id"><div class="form"><div class="field"><label>Tanggal Hijriah *</label><select name="hijriDay" required id="iday"></select></div><div class="field"><label>Bulan Hijriah *</label><select name="hijriMonth" required id="iMonth"></select></div><div class="field"><label>Tahun Hijriah *</label><input name="hijriYear" type="number" min="1300" max="1600" required></div><div class="field"><label>Jumlah (Rp) *</label><input type="number" name="amount" min="1" step="1" required></div><div class="field full"><label>Uraian *</label><input name="description" required maxlength="180"></div><div class="field"><label>Kategori *</label><select name="kategori" id="incKat" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Rincian *</label><input name="rincian" id="incRinc" list="incRincianList" required maxlength="80" autocomplete="off" placeholder="Pilih atau ketik rincian"><datalist id="incRincianList"></datalist></div><div class="field"><label>Diterima dari</label><input name="payee" maxlength="120"></div><div class="field"><label>Kanal penerimaan</label><input name="channel" maxlength="80"></div><div class="field full"><label>Catatan</label><input name="note" maxlength="180"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('incModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
 
 <div class="backdrop" id="budgetModal"><div class="modal"><h2 id="budTitle">Rincian anggaran</h2><form id="budgetForm"><div class="form"><div class="field"><label>Kategori *</label><select name="kategori" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Anggaran (Rp) *</label><input name="amount" type="number" min="0" step="1" required></div><div class="field full"><label>Nama rincian *</label><input name="name" required maxlength="80"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('budgetModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
 
@@ -301,6 +279,11 @@
   function isAdmin(){return !!(S.user&&S.user.role==='admin');}
   function inScope(k){return S.scope==='ALL'||k===S.scope;}
   function bkey(k,r){return String(k||'')+'|'+String(r||'').trim().toUpperCase();}
+  function normRinc(r){return String(r||'').trim()||'(Tanpa rincian)';}
+  function monthLabel(p){var a=String(p||'').split('-');return months[Number(a[1])-1]+' '+a[0]+' H';}
+  // true: pemasukan menambah total anggaran (anggaran awal + pemasukan, per kategori dan rincian).
+  // false: total anggaran hanya berasal dari sheet ANGGARAN.
+  var INCOME_ADDS_BUDGET=true;
   function tagHtml(k){return k?'<span class="tag'+(k==='NON APB'?' non':'')+'">'+esc(k)+'</span>':'<span class="tag warn">Tanpa kategori</span>';}
 
   document.addEventListener('DOMContentLoaded',function(){
@@ -315,8 +298,10 @@
     el('catFilter').addEventListener('change',function(){S.txLimit=PAGE_SIZE;renderTx();});
     el('dateFilter').addEventListener('change',function(){S.txLimit=PAGE_SIZE;renderTx();});
     el('incSearch').addEventListener('input',debounce(function(){S.incLimit=PAGE_SIZE;renderInc();},150));
+    el('incCatFilter').addEventListener('change',function(){S.incLimit=PAGE_SIZE;renderInc();});
+    el('incDateFilter').addEventListener('change',function(){S.incLimit=PAGE_SIZE;renderInc();});
+    el('incKat').addEventListener('change',function(){fillIncRincian(this.value);});
     el('formKat').addEventListener('change',function(){fillRincian(this.value,'');});
-    el('incKat').addEventListener('change',function(){fillIncRincian(this.value,'');});
     el('txForm').addEventListener('submit',saveTx);
     el('incForm').addEventListener('submit',saveInc);
     el('budgetForm').addEventListener('submit',saveBudget);
@@ -388,8 +373,18 @@
 
   /* ================= PERHITUNGAN (di browser) ================= */
   function computeDash(period){
-    var ks=['APB','NON APB',''],P={};
-    ks.forEach(function(k){P[k]={spent:0,count:0,life:0,lifeCount:0,undated:0,undatedAmt:0,budget:0,bspent:0,inc:0,incMonth:0};});
+    var ks=['APB','NON APB',''],P={},rowMap={},rows=[];
+    ks.forEach(function(k){P[k]={spent:0,count:0,life:0,lifeCount:0,undated:0,undatedAmt:0,budget:0,bspent:0,inc:0,incMonth:0,incMC:0,incCount:0,incUndated:0,incUndatedAmt:0,eff:0};});
+    function row(k,name){var key=bkey(k,name),r=rowMap[key];if(!r){r=rowMap[key]={kategori:k,name:name,budget:0,income:0,incMonth:0,incCount:0,spent:0,inBudget:false};rows.push(r);}return r;}
+    S.budgets.forEach(function(b){var r=row(b.kategori,b.name);r.budget+=b.budget;r.inBudget=true;P[b.kategori].budget+=b.budget;});
+    var curInc=[];
+    S.inc.forEach(function(x){
+      var k=x.kategori||'',p=P[k],inS=inScope(k),inM=!!x.hijriKey&&x.hijriKey.slice(0,7)===period;
+      p.inc+=x.amount;p.incCount++;
+      if(inM){p.incMonth+=x.amount;p.incMC++;if(inS)curInc.push(x);}
+      if(!x.hijriKey){p.incUndated++;p.incUndatedAmt+=x.amount;}
+      if(k){var r=row(k,normRinc(x.rincian));r.income+=x.amount;r.incCount++;if(inM)r.incMonth+=x.amount;}
+    });
     var totals={},current=[],undated=[];
     S.tx.forEach(function(t){
       var k=t.kategori||'',p=P[k],inS=inScope(k),bk=bkey(k,t.rincian);
@@ -398,20 +393,33 @@
       else if(t.hijriKey.slice(0,7)===period){p.spent+=t.amount;p.count++;if(inS)current.push(t);}
     });
     var cats=[];
-    S.budgets.forEach(function(b){
-      var sp=totals[bkey(b.kategori,b.name)]||0,p=P[b.kategori];
-      p.budget+=b.budget;p.bspent+=sp;
-      if(inScope(b.kategori))cats.push({kategori:b.kategori,name:b.name,budget:b.budget,spent:sp,remaining:b.budget-sp});
+    rows.forEach(function(r){
+      r.spent=totals[bkey(r.kategori,r.name)]||0;
+      r.eff=r.budget+(INCOME_ADDS_BUDGET?r.income:0);
+      r.remaining=r.eff-r.spent;
+      var p=P[r.kategori];p.bspent+=r.spent;p.eff+=r.eff;
+      if(inScope(r.kategori))cats.push(r);
     });
-    S.inc.forEach(function(x){var p=P[x.kategori||''];p.inc+=x.amount;if(x.hijriKey&&x.hijriKey.slice(0,7)===period)p.incMonth+=x.amount;});
     function agg(f){return ks.reduce(function(n,k){return n+(inScope(k)?P[k][f]:0);},0);}
-    var r={P:P,spent:agg('spent'),count:agg('count'),lifetime:agg('life'),unassigned:agg('undated'),unassignedAmount:agg('undatedAmt'),
-      unrecapped:undated.slice(-8).reverse(),categories:cats.sort(function(a,b){return b.spent-a.spent;}),
-      totalBudget:agg('budget'),budgetedSpent:agg('bspent'),incomeTotal:agg('inc'),incomeMonth:agg('incMonth'),recent:current.slice(-8).reverse()};
-    r.budgetRemaining=r.totalBudget-r.budgetedSpent;r.unmatched=r.lifetime-r.budgetedSpent;r.balance=r.incomeTotal-r.lifetime;
-    return r;
+    var out={P:P,spent:agg('spent'),count:agg('count'),lifetime:agg('life'),unassigned:agg('undated'),unassignedAmount:agg('undatedAmt'),
+      unrecapped:undated.slice(-8).reverse(),categories:cats,totalBudget:agg('budget'),totalEff:agg('eff'),budgetedSpent:agg('bspent'),
+      incomeTotal:agg('inc'),incomeMonth:agg('incMonth'),incMC:agg('incMC'),incCount:agg('incCount'),incUndated:agg('incUndated'),incUndatedAmt:agg('incUndatedAmt'),
+      recent:current.slice(-8).reverse(),recentInc:curInc.slice(-8).reverse(),incRows:cats.filter(function(r){return r.income>0;})};
+    out.incKat=KATS.reduce(function(n,k){return n+(inScope(k)?P[k].inc:0);},0);
+    out.budgetRemaining=out.totalEff-out.budgetedSpent;out.unmatched=out.lifetime-out.budgetedSpent;out.balance=out.incomeTotal-out.lifetime;
+    return out;
   }
-  // Rincian per kategori hanya ditampilkan pada pilihan "Semua"
+  // Baris rekap pemasukan per kategori dan rincian (full = dengan kolom jumlah transaksi)
+  function recapRows(x,full){
+    var html='',cols=full?4:3;
+    KATS.forEach(function(k){
+      if(!inScope(k))return;
+      var rs=x.incRows.filter(function(r){return r.kategori===k;}),P=x.P[k];
+      html+='<tr class="grow"><td>'+tagHtml(k)+' &nbsp;Subtotal '+k+'</td>'+(full?'<td class="amt">'+P.incCount+'</td>':'')+'<td class="amt">'+money.format(P.incMonth)+'</td><td class="amt">'+money.format(P.inc)+'</td></tr>';
+      html+=rs.length?rs.map(function(r){return '<tr><td>'+esc(r.name)+'</td>'+(full?'<td class="amt">'+r.incCount+'</td>':'')+'<td class="amt">'+money.format(r.incMonth)+'</td><td class="amt">'+money.format(r.income)+'</td></tr>';}).join(''):'<tr><td colspan="'+cols+'" class="empty">Belum ada pemasukan untuk '+k+'.</td></tr>';
+    });
+    return html;
+  }
   function splitLine(f,fmt,sign){
     if(S.scope!=='ALL'||!D)return '';
     return '<br>APB '+fmt(D.P['APB'][f])+' · NON APB '+fmt(D.P['NON APB'][f]);
@@ -432,8 +440,7 @@
     el('hday').innerHTML='<option value="">Pilih tanggal</option>'+days;
     el('iday').innerHTML='<option value="">Pilih tanggal</option>'+days;
   }
-  function periodChanged(){var y=Number(el('hyear').value);if(!y)return;S.period=String(y)+'-'+String(el('hmonth').value).padStart(2,'0');renderDash();}
-  // Filter rincian di halaman Pengeluaran (mengikuti pilihan kategori di atas)
+  function periodChanged(){var y=Number(el('hyear').value);if(!y)return;S.period=String(y)+'-'+String(el('hmonth').value).padStart(2,'0');renderDash();renderInc();}
   function options(){
     var cf=el('catFilter').value,opts='';
     KATS.forEach(function(k){
@@ -445,8 +452,28 @@
     el('catFilter').innerHTML='<option value="">Semua rincian</option>'+opts;
     el('catFilter').value=cf;
     if(el('catFilter').value!==cf)el('catFilter').value='';
+    // filter rincian pada halaman Pemasukan: rincian yang benar-benar ada di data pemasukan
+    var icf=el('incCatFilter').value,seen={},iopts='';
+    KATS.forEach(function(k){
+      if(!inScope(k))return;
+      var names=[];
+      S.inc.forEach(function(x){if(x.kategori!==k)return;var n=normRinc(x.rincian),b=bkey(k,n);if(!seen[b]){seen[b]=1;names.push(n);}});
+      if(!names.length)return;
+      names.sort();
+      iopts+='<optgroup label="'+k+'">'+names.map(function(n){return '<option value="'+esc(bkey(k,n))+'">'+esc(n)+'</option>';}).join('')+'</optgroup>';
+    });
+    el('incCatFilter').innerHTML='<option value="">Semua rincian</option>'+iopts;
+    el('incCatFilter').value=icf;
+    if(el('incCatFilter').value!==icf)el('incCatFilter').value='';
   }
-  // Isi pilihan rincian di form sesuai kategori yang dipilih
+  // Saran rincian pada form pemasukan: rincian anggaran + rincian pemasukan yang pernah dipakai pada kategori itu
+  function fillIncRincian(kat){
+    var seen={},html='';
+    function add(n){var b=bkey(kat,n);if(!n||seen[b])return;seen[b]=1;html+='<option value="'+esc(n)+'"></option>';}
+    S.budgets.forEach(function(b){if(b.kategori===kat)add(b.name);});
+    S.inc.forEach(function(x){if(x.kategori===kat)add(x.rincian);});
+    el('incRincianList').innerHTML=html;
+  }
   function fillRincian(kat,sel){
     var items=S.budgets.filter(function(b){return b.kategori===kat;}),found='',up=String(sel||'').trim().toUpperCase();
     var html='<option value="">'+(kat?(items.length?'Pilih rincian':'Belum ada rincian untuk '+kat):'Pilih kategori dulu')+'</option>';
@@ -455,23 +482,14 @@
     el('formCat').innerHTML=html;
     el('formCat').value=found||sel||'';
   }
-
-  // Isi pilihan rincian di form Pemasukan sesuai kategori yang dipilih
-  function fillIncRincian(kat,sel){
-    var items=S.budgets.filter(function(b){return b.kategori===kat;}),found='',up=String(sel||'').trim().toUpperCase();
-    var html='<option value="">'+(kat?(items.length?'Pilih rincian':'Belum ada rincian untuk '+kat):'Pilih kategori dulu')+'</option>';
-    items.forEach(function(b){if(up&&b.name.toUpperCase()===up)found=b.name;html+='<option value="'+esc(b.name)+'">'+esc(b.name)+'</option>';});
-    if(sel&&!found)html+='<option value="'+esc(sel)+'">'+esc(sel)+' (tidak ada di anggaran)</option>';
-    el('incCat').innerHTML=html;
-    el('incCat').value=found||sel||'';
-  }
-
   function renderAll(){options();renderDash();renderBud();renderTx();renderInc();if(S.users)renderUsers();}
   function renderWarn(){
     var w=(S.warnings||[]).slice();
     var nt=S.tx.filter(function(t){return !t.kategori;}).length,ni=S.inc.filter(function(t){return !t.kategori;}).length;
+    var nr=S.inc.filter(function(t){return t.kategori&&!t.rincian;}).length;
     if(nt)w.push(nt+' pengeluaran belum punya kategori APB/NON APB, sehingga hanya terhitung pada pilihan "Semua". Pilih "Tanpa kategori" di filter tanggal pada halaman Pengeluaran lalu klik Ubah.');
-    if(ni)w.push(ni+' pemasukan belum punya kategori APB/NON APB.');
+    if(ni)w.push(ni+' pemasukan belum punya kategori APB/NON APB. Pilih "Tanpa kategori" di filter tanggal pada halaman Pemasukan lalu klik Ubah.');
+    if(nr)w.push(nr+' pemasukan belum punya rincian (dikelompokkan sebagai "(Tanpa rincian)"). Klik Ubah pada halaman Pemasukan untuk melengkapinya.');
     var b=el('warnBox');b.style.display=w.length?'block':'none';b.innerHTML=w.map(esc).join('<br>');
   }
   function renderDash(){
@@ -483,23 +501,31 @@
     el('lifeSub').innerHTML='Termasuk data lama tanpa tanggal'+splitLine('life',short);
     el('undated').textContent=x.unassigned;
     el('undatedSub').textContent=x.unassigned?money.format(x.unassignedAmount)+' · klik untuk melengkapi':'Semua transaksi sudah terekap';
-    var pct=x.totalBudget?Math.round(x.budgetedSpent/x.totalBudget*100):0;
-    el('tbudget').textContent=money.format(x.totalBudget);
-    el('tbudgetSub').innerHTML='Realisasi '+money.format(x.budgetedSpent)+' ('+pct+'%)'+splitLine('budget',short);
+    el('incm').textContent=money.format(x.incomeMonth);
+    el('incmSub').innerHTML=x.incMC+' pemasukan bulan Hijriah ini'+splitLine('incMonth',short);
+    el('inctot').textContent=money.format(x.incomeTotal);
+    el('inctotSub').innerHTML=x.incCount+' pemasukan tercatat'+splitLine('inc',short);
+    el('incund').textContent=x.incUndated;
+    el('incundSub').textContent=x.incUndated?money.format(x.incUndatedAmt)+' · klik untuk melengkapi':'Semua pemasukan sudah terekap';
+    var pct=x.totalEff?Math.round(x.budgetedSpent/x.totalEff*100):0;
+    el('tbudget').textContent=money.format(x.totalEff);
+    el('tbudgetSub').innerHTML='Anggaran awal '+money.format(x.totalBudget)+(INCOME_ADDS_BUDGET?' + pemasukan '+money.format(x.incKat):'')+splitLine('eff',short);
     var br=el('bremain');br.textContent=money.format(x.budgetRemaining);br.classList.toggle('neg',x.budgetRemaining<0);
-    el('bremainSub').textContent=x.budgetRemaining<0?'Realisasi melebihi total anggaran':'Total anggaran dikurangi realisasi';
+    el('bremainSub').textContent=x.budgetRemaining<0?'Realisasi melebihi total anggaran':'Realisasi '+money.format(x.budgetedSpent)+' ('+pct+'% dari total anggaran)';
     var sd=el('saldo');sd.textContent=money.format(x.balance);sd.classList.toggle('neg',x.balance<0);
-    el('saldoSub').innerHTML='Pemasukan total '+money.format(x.incomeTotal)+' · bulan ini '+money.format(x.incomeMonth)+splitBalance();
+    el('saldoSub').innerHTML='Pemasukan '+money.format(x.incomeTotal)+' − pengeluaran '+money.format(x.lifetime)+splitBalance();
     // Realisasi per rincian, dikelompokkan per kategori
     var html='';
     KATS.forEach(function(k){
       if(!inScope(k))return;
-      var rows=x.categories.filter(function(c){return c.kategori===k&&(c.spent||c.budget);}).slice(0,12);
-      html+='<div class="grp"><span>'+tagHtml(k)+'</span><span class="sub" style="margin:0">'+short(x.P[k].bspent)+' / '+short(x.P[k].budget)+'</span></div>';
-      html+=rows.length?rows.map(function(c){var p=c.budget?Math.min(100,Math.round(c.spent/c.budget*100)):0;return '<div class="bar"><div class="cat" title="'+esc(c.name)+'">'+esc(c.name)+'</div><div class="track"><div class="fill" style="width:'+p+'%;'+(c.spent>c.budget?'background:#c75e54':'')+'"></div></div><div class="barval">'+short(c.spent)+' / '+short(c.budget)+'</div></div>';}).join(''):'<div class="empty" style="padding:10px">Belum ada rincian anggaran untuk '+k+'.</div>';
+      var rows=x.categories.filter(function(c){return c.kategori===k&&(c.spent||c.eff);}).sort(function(a,b){return b.spent-a.spent;}).slice(0,12);
+      html+='<div class="grp"><span>'+tagHtml(k)+'</span><span class="sub" style="margin:0">'+short(x.P[k].bspent)+' / '+short(x.P[k].eff)+'</span></div>';
+      html+=rows.length?rows.map(function(c){var p=c.eff?Math.min(100,Math.round(c.spent/c.eff*100)):0;return '<div class="bar"><div class="cat" title="'+esc(c.name)+'">'+esc(c.name)+'</div><div class="track"><div class="fill" style="width:'+p+'%;'+(c.spent>c.eff?'background:#c75e54':'')+'"></div></div><div class="barval">'+short(c.spent)+' / '+short(c.eff)+'</div></div>';}).join(''):'<div class="empty" style="padding:10px">Belum ada rincian anggaran untuk '+k+'.</div>';
     });
     el('bars').innerHTML=html;
     el('recent').innerHTML=x.recent.length?x.recent.slice(0,6).map(function(t){return '<div style="display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)"><div><b>'+esc(t.description)+'</b><div class="sub">'+dateLabel(t.hijriKey)+' · '+tagHtml(t.kategori)+' '+esc(t.rincian)+'</div></div><b>'+short(t.amount)+'</b></div>';}).join(''):'<div class="empty">Belum ada transaksi.</div>';
+    el('recentInc').innerHTML=x.recentInc.length?x.recentInc.slice(0,6).map(function(t){return '<div style="display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)"><div><b>'+esc(t.description)+'</b><div class="sub">'+dateLabel(t.hijriKey)+' · '+tagHtml(t.kategori)+' '+esc(t.rincian||'—')+'</div></div><b>'+short(t.amount)+'</b></div>';}).join(''):'<div class="empty">Belum ada pemasukan bulan ini.</div>';
+    el('incRecapDash').innerHTML=recapRows(x,false);
     el('recentTable').innerHTML=x.recent.length?x.recent.map(function(t){return '<tr><td>'+dateLabel(t.hijriKey)+'</td><td>'+esc(t.description)+'</td><td>'+tagHtml(t.kategori)+'</td><td><span class="pill">'+esc(t.rincian)+'</span></td><td>'+esc(t.payee||'—')+'</td><td class="amt">'+money.format(t.amount)+'</td></tr>';}).join(''):'<tr><td colspan="6" class="empty">Belum ada transaksi bulan ini.</td></tr>';
     el('unrecSub').textContent=x.unassigned?(x.unassigned+' transaksi senilai '+money.format(x.unassignedAmount)+' belum masuk rekap bulan Hijriah'+(x.unassigned>x.unrecapped.length?' (menampilkan '+x.unrecapped.length+' terbaru)':'')+'.'):'Tidak ada transaksi yang belum terekap.';
     el('unrecTable').innerHTML=x.unrecapped.length?x.unrecapped.map(function(t){return '<tr><td>'+esc(prettyOld(t.oldDate)||'—')+'</td><td>'+esc(t.description)+'</td><td>'+tagHtml(t.kategori)+'</td><td><span class="pill">'+esc(t.rincian)+'</span></td><td class="amt">'+money.format(t.amount)+'</td><td><button class="btn light" data-act="editTx" data-id="'+esc(t.id)+'">Lengkapi</button></td></tr>';}).join(''):'<tr><td colspan="6" class="empty">Semua transaksi sudah memiliki tanggal Hijriah.</td></tr>';
@@ -509,13 +535,13 @@
     KATS.forEach(function(k){
       if(!inScope(k))return;
       var P=x.P[k],rows=x.categories.filter(function(c){return c.kategori===k;});
-      html+='<tr class="grow"><td>'+tagHtml(k)+' &nbsp;Subtotal '+k+'</td><td class="amt">'+money.format(P.budget)+'</td><td class="amt">'+money.format(P.bspent)+'</td><td class="amt'+(P.budget-P.bspent<0?' neg':'')+'">'+money.format(P.budget-P.bspent)+'</td><td class="amt'+(P.budget&&P.bspent>P.budget?' neg':'')+'">'+pctText(P.bspent,P.budget)+'</td>'+(admin?'<td></td>':'')+'</tr>';
-      html+=rows.length?rows.map(function(c){var p=c.budget?Math.min(100,c.spent/c.budget*100):0;return '<tr><td><b>'+esc(c.name)+'</b><div class="track" style="margin-top:6px"><div class="fill" style="width:'+p+'%;'+(c.spent>c.budget?'background:#c75e54':'')+'"></div></div></td><td class="amt">'+money.format(c.budget)+'</td><td class="amt">'+money.format(c.spent)+'</td><td class="amt'+(c.remaining<0?' neg':'')+'">'+money.format(c.remaining)+'</td><td class="amt'+(c.budget&&c.spent>c.budget?' neg':'')+'">'+pctText(c.spent,c.budget)+'</td>'+(admin?'<td><button class="btn light" data-act="editBudget" data-kat="'+esc(c.kategori)+'" data-name="'+esc(c.name)+'" data-amount="'+c.budget+'">Ubah</button> <button class="btn del" data-act="deleteBudget" data-kat="'+esc(c.kategori)+'" data-name="'+esc(c.name)+'">Hapus</button></td>':'')+'</tr>';}).join(''):'<tr><td colspan="6" class="empty">Belum ada rincian anggaran untuk '+k+'.'+(admin?' Klik "+ Rincian" untuk menambah.':'')+'</td></tr>';
+      html+='<tr class="grow"><td>'+tagHtml(k)+' &nbsp;Subtotal '+k+'</td><td class="amt">'+money.format(P.budget)+'</td><td class="amt">'+money.format(P.inc)+'</td><td class="amt">'+money.format(P.eff)+'</td><td class="amt">'+money.format(P.bspent)+'</td><td class="amt'+(P.eff-P.bspent<0?' neg':'')+'">'+money.format(P.eff-P.bspent)+'</td><td class="amt'+(P.eff&&P.bspent>P.eff?' neg':'')+'">'+pctText(P.bspent,P.eff)+'</td>'+(admin?'<td></td>':'')+'</tr>';
+      html+=rows.length?rows.map(function(c){var p=c.eff?Math.min(100,c.spent/c.eff*100):0;return '<tr><td><b>'+esc(c.name)+'</b>'+(c.inBudget?'':' <span class="tag">dari pemasukan</span>')+'<div class="track" style="margin-top:6px"><div class="fill" style="width:'+p+'%;'+(c.spent>c.eff?'background:#c75e54':'')+'"></div></div></td><td class="amt">'+money.format(c.budget)+'</td><td class="amt">'+money.format(c.income)+'</td><td class="amt">'+money.format(c.eff)+'</td><td class="amt">'+money.format(c.spent)+'</td><td class="amt'+(c.remaining<0?' neg':'')+'">'+money.format(c.remaining)+'</td><td class="amt'+(c.eff&&c.spent>c.eff?' neg':'')+'">'+pctText(c.spent,c.eff)+'</td>'+(admin?'<td><button class="btn light" data-act="editBudget" data-kat="'+esc(c.kategori)+'" data-name="'+esc(c.name)+'" data-amount="'+c.budget+'">'+(c.inBudget?'Ubah':'Atur')+'</button>'+(c.inBudget?' <button class="btn del" data-act="deleteBudget" data-kat="'+esc(c.kategori)+'" data-name="'+esc(c.name)+'">Hapus</button>':'')+'</td>':'')+'</tr>';}).join(''):'<tr><td colspan="8" class="empty">Belum ada rincian anggaran untuk '+k+'.'+(admin?' Klik "+ Rincian" untuk menambah.':'')+'</td></tr>';
     });
     el('budgetTable').innerHTML=html;
-    el('budgetFoot').innerHTML='<tr><td>TOTAL'+(S.scope==='ALL'?'':' '+S.scope)+'</td><td class="amt">'+money.format(x.totalBudget)+'</td><td class="amt">'+money.format(x.budgetedSpent)+'</td><td class="amt'+(x.budgetRemaining<0?' neg':'')+'">'+money.format(x.budgetRemaining)+'</td><td class="amt'+(x.totalBudget&&x.budgetedSpent>x.totalBudget?' neg':'')+'">'+pctText(x.budgetedSpent,x.totalBudget)+'</td>'+(admin?'<td></td>':'')+'</tr>';
+    el('budgetFoot').innerHTML='<tr><td>TOTAL'+(S.scope==='ALL'?'':' '+S.scope)+'</td><td class="amt">'+money.format(x.totalBudget)+'</td><td class="amt">'+money.format(x.incKat)+'</td><td class="amt">'+money.format(x.totalEff)+'</td><td class="amt">'+money.format(x.budgetedSpent)+'</td><td class="amt'+(x.budgetRemaining<0?' neg':'')+'">'+money.format(x.budgetRemaining)+'</td><td class="amt'+(x.totalEff&&x.budgetedSpent>x.totalEff?' neg':'')+'">'+pctText(x.budgetedSpent,x.totalEff)+'</td>'+(admin?'<td></td>':'')+'</tr>';
     var n=el('budNote');
-    if(x.unmatched>0){n.style.display='block';n.textContent='Ada pengeluaran senilai '+money.format(x.unmatched)+' yang kategori atau rinciannya tidak ada dalam daftar anggaran, sehingga tidak masuk total realisasi di atas.';}
+    if(x.unmatched>0){n.style.display='block';n.textContent='Ada pengeluaran senilai '+money.format(x.unmatched)+' yang kategori atau rinciannya tidak ada dalam daftar anggaran maupun pemasukan, sehingga tidak masuk total realisasi di atas.';}
     else n.style.display='none';
   }
   function filteredTx(){
@@ -541,17 +567,32 @@
     if(rows.length>shown.length)html+='<tr><td colspan="8" class="empty"><button class="btn light" data-act="moreTx">Tampilkan '+Math.min(PAGE_SIZE,rows.length-shown.length)+' lagi</button></td></tr>';
     el('txTable').innerHTML=html||'<tr><td colspan="8" class="empty">Tidak ada transaksi yang cocok.</td></tr>';
   }
-  function renderInc(){
-    var q=el('incSearch').value.trim().toLowerCase(),rows=[],admin=isAdmin();
-    for(var i=S.inc.length-1;i>=0;i--){var x=S.inc[i];if(!inScope(x.kategori))continue;if(q&&(x.description+' '+x.note+' '+x.kategori).toLowerCase().indexOf(q)<0)continue;rows.push(x);}
-    var total=rows.reduce(function(n,i){return n+i.amount;},0),shown=rows.slice(0,S.incLimit);
-    el('inccount').textContent=rows.length+' pemasukan · total '+money.format(total)+(rows.length>shown.length?' (menampilkan '+shown.length+')':'')+(S.scope==='ALL'?'':' · '+S.scope)+'.';
-    var html=shown.map(function(i){return '<tr><td>'+(i.hijriKey?dateLabel(i.hijriKey):'<span class="sub">Perlu tanggal Hijriah</span>')+'</td><td>'+esc(i.description)+'</td><td>'+tagHtml(i.kategori)+'</td><td>'+esc(i.note||'—')+'</td><td class="amt">'+money.format(i.amount)+'</td><td><button class="btn light" data-act="editInc" data-id="'+esc(i.id)+'">Ubah</button>'+(admin?' <button class="btn del" data-act="deleteInc" data-id="'+esc(i.id)+'">Hapus</button>':'')+'</td></tr>';}).join('');
-    if(rows.length>shown.length)html+='<tr><td colspan="6" class="empty"><button class="btn light" data-act="moreInc">Tampilkan '+Math.min(PAGE_SIZE,rows.length-shown.length)+' lagi</button></td></tr>';
-    el('incTable').innerHTML=html||'<tr><td colspan="6" class="empty">Belum ada pemasukan.</td></tr>';
+  function filteredInc(){
+    var q=el('incSearch').value.trim().toLowerCase(),cat=el('incCatFilter').value,df=el('incDateFilter').value,out=[];
+    for(var i=S.inc.length-1;i>=0;i--){
+      var x=S.inc[i];
+      if(!inScope(x.kategori))continue;
+      if(cat&&bkey(x.kategori,normRinc(x.rincian))!==cat)continue;
+      if(df==='undated'&&x.hijriKey)continue;
+      if(df==='nokat'&&x.kategori)continue;
+      if(q){if(x._s===undefined)x._s=[x.description,x.kategori,x.rincian,x.payee,x.channel,x.note].join(' ').toLowerCase();if(x._s.indexOf(q)<0)continue;}
+      out.push(x);
+    }
+    return out;
   }
-
-  // Satu penangan klik untuk semua tombol di tabel
+  function renderInc(){
+    var x=D||computeDash(S.period),rows=filteredInc(),admin=isAdmin(),shown=rows.slice(0,S.incLimit);
+    var total=rows.reduce(function(n,i){return n+i.amount;},0);
+    el('inccount').textContent=rows.length+' pemasukan · total '+money.format(total)+(rows.length>shown.length?' (menampilkan '+shown.length+')':'')+(S.scope==='ALL'?'':' · '+S.scope)+'.';
+    el('incRecapSub').textContent='Bulan Hijriah terpilih: '+monthLabel(S.period)+(INCOME_ADDS_BUDGET?'. Pemasukan menambah total anggaran pada rincian yang sama.':'.');
+    el('incRecapTable').innerHTML=recapRows(x,true);
+    el('incRecapFoot').innerHTML='<tr><td>TOTAL'+(S.scope==='ALL'?'':' '+S.scope)+'</td><td class="amt">'+x.incCount+'</td><td class="amt">'+money.format(x.incomeMonth)+'</td><td class="amt">'+money.format(x.incomeTotal)+'</td></tr>';
+    var html=shown.map(function(i){return '<tr><td>'+(i.hijriKey?dateLabel(i.hijriKey):'<span class="sub">Perlu tanggal Hijriah</span>')+'</td><td>'+esc(i.description)+(i.note?'<div class="sub" style="margin:2px 0 0">'+esc(i.note)+'</div>':'')+'</td><td>'+tagHtml(i.kategori)+'</td><td>'+(i.rincian?'<span class="pill">'+esc(i.rincian)+'</span>':'<span class="sub">—</span>')+'</td><td>'+esc(i.payee||'—')+'</td><td>'+esc(i.channel||'—')+'</td><td class="amt">'+money.format(i.amount)+'</td><td><button class="btn light" data-act="editInc" data-id="'+esc(i.id)+'">Ubah</button>'+(admin?' <button class="btn del" data-act="deleteInc" data-id="'+esc(i.id)+'">Hapus</button>':'')+'</td></tr>';}).join('');
+    if(rows.length>shown.length)html+='<tr><td colspan="8" class="empty"><button class="btn light" data-act="moreInc">Tampilkan '+Math.min(PAGE_SIZE,rows.length-shown.length)+' lagi</button></td></tr>';
+    el('incTable').innerHTML=html||'<tr><td colspan="8" class="empty">Tidak ada pemasukan yang cocok.</td></tr>';
+  }
+  function goUndatedInc(){el('incDateFilter').value='undated';S.incLimit=PAGE_SIZE;show('inc');renderInc();}
+  function resetIncFilter(){el('incSearch').value='';el('incCatFilter').value='';el('incDateFilter').value='';S.incLimit=PAGE_SIZE;renderInc();}
   function onAction(e){
     var b=e.target.closest&&e.target.closest('button[data-act]');if(!b)return;
     var a=b.dataset.act;
@@ -591,26 +632,7 @@
     api('apiDelete',[id]).then(function(){toast('Transaksi dihapus.');}).catch(function(err){S.tx.splice(idx,0,item);renderAll();fail(err);});
   }
   /* ================= PEMASUKAN ================= */
-  function openInc(t){
-    var f=el('incForm');
-    f.reset();
-    f.elements.id.value=t?t.id:'';
-    var k=t&&t.hijriKey?t.hijriKey.split('-'):S.period.split('-');
-    f.elements.hijriYear.value=k[0];
-    f.elements.hijriMonth.value=String(Number(k[1]));
-    f.elements.hijriDay.value=t&&t.hijriKey?String(Number(k[2])):'';
-    f.elements.description.value=t?t.description:'';
-    f.elements.amount.value=t?t.amount:'';
-    
-    var kat=t?t.kategori:defaultKat();
-    f.elements.kategori.value=kat;
-    fillIncRincian(kat,t?t.rincian:''); // Panggil fungsi cascade rincian
-    
-    f.elements.note.value=t?t.note:'';
-    el('incTitle').textContent=t?'Ubah pemasukan':'Catat pemasukan';
-    el('incModal').style.display='flex';
-  }
-  
+  function openInc(t){var f=el('incForm');f.reset();f.elements.id.value=t?t.id:'';var k=t&&t.hijriKey?t.hijriKey.split('-'):S.period.split('-');f.elements.hijriYear.value=k[0];f.elements.hijriMonth.value=String(Number(k[1]));f.elements.hijriDay.value=t&&t.hijriKey?String(Number(k[2])):'';f.elements.description.value=t?t.description:'';f.elements.amount.value=t?t.amount:'';var kat=t?t.kategori:defaultKat();f.elements.kategori.value=kat;fillIncRincian(kat);f.elements.rincian.value=t?t.rincian:'';f.elements.payee.value=t?t.payee:'';f.elements.channel.value=t?t.channel:'';f.elements.note.value=t?t.note:'';el('incTitle').textContent=t?'Ubah pemasukan':'Catat pemasukan';el('incModal').style.display='flex';}
   function editInc(id){var t=S.inc.find(function(x){return x.id===id;});if(t)openInc(t);}
   function saveInc(e){e.preventDefault();var f=e.currentTarget,d=Object.fromEntries(new FormData(f).entries());d.amount=Number(d.amount);busy(f,true);
     api('apiIncomeSave',[d]).then(function(r){upsert(S.inc,r.item);closeModal('incModal');toast('Pemasukan tersimpan.');renderAll();}).catch(fail).finally(function(){busy(f,false);});}
@@ -685,6 +707,7 @@
   }
   // Ekspor selalu memuat SEMUA data (APB dan NON APB), lengkap dengan lembar REKAP per kategori.
   function buildExport(){
+    var sv=S.scope;S.scope='ALL';var x=computeDash(S.period);S.scope=sv; // ekspor selalu memuat semua kategori
     var txs=S.tx;
     var transaksi=[['ID','Tanggal Hijriah (YYYY-MM-DD)','Uraian','Jumlah','Kategori','Rincian','Nota / Penerima','Kanal','Catatan','Tanggal Lama','Sumber']].concat(txs.map(function(t){return [t.id,t.hijriKey,t.description,t.amount,t.kategori,t.rincian,t.payee,t.channel,t.note,t.oldDate,t.source||''];}));
     var catatan=[['No','Kategori','Bulan Hijriah','Tanggal','Uraian','Jumlah','Rincian','Nota / Penerima','Kanal','Catatan']].concat(txs.map(function(t,i){
@@ -692,23 +715,29 @@
       if(t.hijriKey){var p=t.hijriKey.split('-');bulan=months[Number(p[1])-1]+' '+p[0]+' H';tgl=Number(p[2]);}
       return [i+1,t.kategori,bulan,tgl,t.description,t.amount,t.rincian,t.payee,t.channel,t.note];
     }));
-    var spent={};txs.forEach(function(t){var b=bkey(t.kategori,t.rincian);spent[b]=(spent[b]||0)+t.amount;});
-    var anggaran=[['Kategori','Rincian','Anggaran','Realisasi','Sisa','%']],gb=0,gs=0;
+    var anggaran=[['Kategori','Rincian','Anggaran Awal','Pemasukan','Total Anggaran','Realisasi','Sisa','%']],rekapInc=[['Kategori','Rincian','Transaksi','Bulan Hijriah ini ('+monthLabel(S.period)+')','Total Pemasukan']];
+    var g=[0,0,0,0],gi=[0,0,0];
     KATS.forEach(function(k){
-      var kb=0,ks=0;
-      S.budgets.filter(function(b){return b.kategori===k;}).forEach(function(b){var s=spent[bkey(b.kategori,b.name)]||0;kb+=b.budget;ks+=s;anggaran.push([k,b.name,b.budget,s,b.budget-s,b.budget?s/b.budget:'']);});
-      anggaran.push([k,'SUBTOTAL '+k,kb,ks,kb-ks,kb?ks/kb:'']);gb+=kb;gs+=ks;
+      var P=x.P[k];
+      x.categories.filter(function(c){return c.kategori===k;}).forEach(function(c){
+        anggaran.push([k,c.name,c.budget,c.income,c.eff,c.spent,c.remaining,c.eff?c.spent/c.eff:'']);
+        if(c.income>0)rekapInc.push([k,c.name,c.incCount,c.incMonth,c.income]);
+      });
+      anggaran.push([k,'SUBTOTAL '+k,P.budget,P.inc,P.eff,P.bspent,P.eff-P.bspent,P.eff?P.bspent/P.eff:'']);
+      rekapInc.push([k,'SUBTOTAL '+k,P.incCount,P.incMonth,P.inc]);
+      g[0]+=P.budget;g[1]+=P.inc;g[2]+=P.eff;g[3]+=P.bspent;gi[0]+=P.incCount;gi[1]+=P.incMonth;gi[2]+=P.inc;
     });
-    anggaran.push(['','TOTAL',gb,gs,gb-gs,gb?gs/gb:'']);
-    var pemasukan=[['ID','Tanggal Hijriah (YYYY-MM-DD)','Sumber / Uraian','Jumlah','Kategori','Catatan']].concat(S.inc.map(function(i){return [i.id,i.hijriKey,i.description,i.amount,i.kategori,i.note];}));
-    var P=computeDash(S.period).P,rekap=[['Kategori','Anggaran','Pengeluaran','Sisa anggaran','Pemasukan','Saldo kas']],t=[0,0,0,0,0];
+    anggaran.push(['','TOTAL',g[0],g[1],g[2],g[3],g[2]-g[3],g[2]?g[3]/g[2]:'']);
+    rekapInc.push(['','TOTAL',gi[0],gi[1],gi[2]]);
+    var pemasukan=[['ID','Tanggal Hijriah (YYYY-MM-DD)','Uraian','Jumlah','Kategori','Rincian','Diterima Dari','Kanal','Catatan','Diinput Oleh']].concat(S.inc.map(function(i){return [i.id,i.hijriKey,i.description,i.amount,i.kategori,i.rincian,i.payee,i.channel,i.note,i.source||''];}));
+    var rekap=[['Kategori','Anggaran Awal','Pemasukan','Total Anggaran','Pengeluaran','Sisa Anggaran','Saldo Kas']],t=[0,0,0,0,0,0];
     ['APB','NON APB',''].forEach(function(k){
-      var p=P[k];if(k===''&&!p.life&&!p.inc)return;
-      var row=[p.budget,p.life,p.budget-p.bspent,p.inc,p.inc-p.life];row.forEach(function(v,i){t[i]+=v;});
+      var p=x.P[k];if(k===''&&!p.life&&!p.inc)return;
+      var row=[p.budget,p.inc,p.eff,p.life,p.eff-p.bspent,p.inc-p.life];row.forEach(function(v,i){t[i]+=v;});
       rekap.push([k||'Tanpa kategori'].concat(row));
     });
     rekap.push(['TOTAL'].concat(t));
-    return {catatan:catatan,transaksi:transaksi,anggaran:anggaran,pemasukan:pemasukan,rekap:rekap};
+    return {catatan:catatan,transaksi:transaksi,anggaran:anggaran,pemasukan:pemasukan,rekap:rekap,rekapInc:rekapInc};
   }
   function exportExcel(){
     var btn=el('btnExport');btn.disabled=true;btn.textContent='Bismilaah...';
@@ -724,11 +753,12 @@
         }
         XLSX.utils.book_append_sheet(wb,ws,name);
       }
-      add('REKAP',d.rekap,[18,18,18,18,18,18],[1,2,3,4,5]);
+      add('REKAP',d.rekap,[18,18,18,18,18,18,18],[1,2,3,4,5,6]);
+      add('REKAP PEMASUKAN',d.rekapInc,[10,34,12,30,20],[2,3,4]);
       add('CATATAN',d.catatan,[5,10,22,10,40,14,26,24,16,24],[5]);
       add('TRANSAKSI',d.transaksi,[38,16,40,14,10,26,24,16,24,22,24],[3]);
-      add('ANGGARAN',d.anggaran,[10,34,16,16,16,8],[2,3,4],[5]);
-      add('PEMASUKAN',d.pemasukan,[38,16,40,14,10,28],[3]);
+      add('ANGGARAN',d.anggaran,[10,34,16,16,16,16,16,8],[2,3,4,5,6],[7]);
+      add('PEMASUKAN',d.pemasukan,[38,16,40,14,10,26,24,16,24,22],[3]);
       XLSX.writeFile(wb,'Keuangan-Kantor-LABSOMA-'+S.period+'.xlsx');
       toast('File Excel berhasil dibuat.');
     }).catch(fail).finally(function(){btn.disabled=false;btn.textContent='⬇ Ekspor Excel';});
