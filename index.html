@@ -211,7 +211,38 @@
 
 <div class="backdrop" id="txModal"><div class="modal"><h2 id="modalTitle">Catat pengeluaran</h2><form id="txForm"><input type="hidden" name="id"><input type="hidden" name="oldDate"><div class="form"><div class="field"><label>Tanggal Hijriah *</label><select name="hijriDay" required id="hday"></select></div><div class="field"><label>Bulan Hijriah *</label><select name="hijriMonth" required id="formHmonth"></select></div><div class="field"><label>Tahun Hijriah *</label><input name="hijriYear" type="number" min="1300" max="1600" required></div><div class="field"><label>Jumlah (Rp) *</label><input type="number" name="amount" min="1" step="1" required></div><div class="field full"><label>Uraian *</label><input name="description" required maxlength="180"></div><div class="field"><label>Kategori *</label><select name="kategori" id="formKat" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Rincian *</label><select name="rincian" id="formCat" required></select></div><div class="field"><label>Nota / penerima</label><input name="payee" maxlength="120"></div><div class="field"><label>Kanal pembayaran</label><input name="channel" maxlength="80"></div><div class="field full"><label>Catatan</label><input name="note" maxlength="180"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('txModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
 
-<div class="backdrop" id="incModal"><div class="modal"><h2 id="incTitle">Catat pemasukan</h2><form id="incForm"><input type="hidden" name="id"><div class="form"><div class="field"><label>Tanggal Hijriah *</label><select name="hijriDay" required id="iday"></select></div><div class="field"><label>Bulan Hijriah *</label><select name="hijriMonth" required id="iMonth"></select></div><div class="field"><label>Tahun Hijriah *</label><input name="hijriYear" type="number" min="1300" max="1600" required></div><div class="field"><label>Jumlah (Rp) *</label><input type="number" name="amount" min="1" step="1" required></div><div class="field"><label>Kategori *</label><select name="kategori" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Catatan</label><input name="note" maxlength="180"></div><div class="field full"><label>Sumber / uraian *</label><input name="description" required maxlength="180"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('incModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
+<div class="backdrop" id="incModal">
+  <div class="modal">
+    <h2 id="incTitle">Catat pemasukan</h2>
+    <form id="incForm">
+      <input type="hidden" name="id">
+      <div class="form">
+        <div class="field"><label>Tanggal Hijriah *</label><select name="hijriDay" required id="iday"></select></div>
+        <div class="field"><label>Bulan Hijriah *</label><select name="hijriMonth" required id="iMonth"></select></div>
+        <div class="field"><label>Tahun Hijriah *</label><input name="hijriYear" type="number" min="1300" max="1600" required></div>
+        <div class="field"><label>Jumlah (Rp) *</label><input type="number" name="amount" min="1" step="1" required></div>
+        <div class="field">
+          <label>Kategori *</label>
+          <select name="kategori" id="incKat" required>
+            <option value="">Pilih kategori</option>
+            <option value="APB">APB</option>
+            <option value="NON APB">NON APB</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Rincian *</label>
+          <select name="rincian" id="incCat" required></select>
+        </div>
+        <div class="field full"><label>Sumber / uraian *</label><input name="description" required maxlength="180"></div>
+        <div class="field full"><label>Catatan</label><input name="note" maxlength="180"></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn ghost" onclick="closeModal('incModal')">Batal</button>
+        <button class="btn">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <div class="backdrop" id="budgetModal"><div class="modal"><h2 id="budTitle">Rincian anggaran</h2><form id="budgetForm"><div class="form"><div class="field"><label>Kategori *</label><select name="kategori" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Anggaran (Rp) *</label><input name="amount" type="number" min="0" step="1" required></div><div class="field full"><label>Nama rincian *</label><input name="name" required maxlength="80"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('budgetModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
 
@@ -285,6 +316,7 @@
     el('dateFilter').addEventListener('change',function(){S.txLimit=PAGE_SIZE;renderTx();});
     el('incSearch').addEventListener('input',debounce(function(){S.incLimit=PAGE_SIZE;renderInc();},150));
     el('formKat').addEventListener('change',function(){fillRincian(this.value,'');});
+    el('incKat').addEventListener('change',function(){fillIncRincian(this.value,'');});
     el('txForm').addEventListener('submit',saveTx);
     el('incForm').addEventListener('submit',saveInc);
     el('budgetForm').addEventListener('submit',saveBudget);
@@ -423,6 +455,17 @@
     el('formCat').innerHTML=html;
     el('formCat').value=found||sel||'';
   }
+
+  // Isi pilihan rincian di form Pemasukan sesuai kategori yang dipilih
+  function fillIncRincian(kat,sel){
+    var items=S.budgets.filter(function(b){return b.kategori===kat;}),found='',up=String(sel||'').trim().toUpperCase();
+    var html='<option value="">'+(kat?(items.length?'Pilih rincian':'Belum ada rincian untuk '+kat):'Pilih kategori dulu')+'</option>';
+    items.forEach(function(b){if(up&&b.name.toUpperCase()===up)found=b.name;html+='<option value="'+esc(b.name)+'">'+esc(b.name)+'</option>';});
+    if(sel&&!found)html+='<option value="'+esc(sel)+'">'+esc(sel)+' (tidak ada di anggaran)</option>';
+    el('incCat').innerHTML=html;
+    el('incCat').value=found||sel||'';
+  }
+
   function renderAll(){options();renderDash();renderBud();renderTx();renderInc();if(S.users)renderUsers();}
   function renderWarn(){
     var w=(S.warnings||[]).slice();
@@ -548,7 +591,26 @@
     api('apiDelete',[id]).then(function(){toast('Transaksi dihapus.');}).catch(function(err){S.tx.splice(idx,0,item);renderAll();fail(err);});
   }
   /* ================= PEMASUKAN ================= */
-  function openInc(t){var f=el('incForm');f.reset();f.elements.id.value=t?t.id:'';var k=t&&t.hijriKey?t.hijriKey.split('-'):S.period.split('-');f.elements.hijriYear.value=k[0];f.elements.hijriMonth.value=String(Number(k[1]));f.elements.hijriDay.value=t&&t.hijriKey?String(Number(k[2])):'';f.elements.description.value=t?t.description:'';f.elements.amount.value=t?t.amount:'';f.elements.kategori.value=t?t.kategori:defaultKat();f.elements.note.value=t?t.note:'';el('incTitle').textContent=t?'Ubah pemasukan':'Catat pemasukan';el('incModal').style.display='flex';}
+  function openInc(t){
+    var f=el('incForm');
+    f.reset();
+    f.elements.id.value=t?t.id:'';
+    var k=t&&t.hijriKey?t.hijriKey.split('-'):S.period.split('-');
+    f.elements.hijriYear.value=k[0];
+    f.elements.hijriMonth.value=String(Number(k[1]));
+    f.elements.hijriDay.value=t&&t.hijriKey?String(Number(k[2])):'';
+    f.elements.description.value=t?t.description:'';
+    f.elements.amount.value=t?t.amount:'';
+    
+    var kat=t?t.kategori:defaultKat();
+    f.elements.kategori.value=kat;
+    fillIncRincian(kat,t?t.rincian:''); // Panggil fungsi cascade rincian
+    
+    f.elements.note.value=t?t.note:'';
+    el('incTitle').textContent=t?'Ubah pemasukan':'Catat pemasukan';
+    el('incModal').style.display='flex';
+  }
+  
   function editInc(id){var t=S.inc.find(function(x){return x.id===id;});if(t)openInc(t);}
   function saveInc(e){e.preventDefault();var f=e.currentTarget,d=Object.fromEntries(new FormData(f).entries());d.amount=Number(d.amount);busy(f,true);
     api('apiIncomeSave',[d]).then(function(r){upsert(S.inc,r.item);closeModal('incModal');toast('Pemasukan tersimpan.');renderAll();}).catch(fail).finally(function(){busy(f,false);});}
