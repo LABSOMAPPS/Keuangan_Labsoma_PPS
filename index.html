@@ -936,6 +936,8 @@
         <div class="card"><div class="label"><span>Sisa anggaran</span><span class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span></div><div class="value" id="bremain">Rp0</div><div class="sub" id="bremainSub"></div></div>
         <div class="card"><div class="label"><span>Saldo kas (pemasukan − pengeluaran)</span><span class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></span></div><div class="value" id="saldo">Rp0</div><div class="sub" id="saldoSub"></div></div>
       </div>
+
+      <section class="panel" style="margin-bottom:20px"><div class="panel-head"><div><h2>Saldo per kanal penyimpanan</h2><div class="sub" id="channelPeriod">Saldo sebelumnya dibawa ke periode terpilih</div></div><button class="btn admin-only" id="channelManageBtn" onclick="openChannels()">Kelola kanal</button></div><div class="scroll"><table><thead><tr><th>Kanal</th><th class="amt">Saldo sebelumnya</th><th class="amt">Pemasukan periode ini</th><th class="amt">Pengeluaran periode ini</th><th class="amt">Sisa saldo</th></tr></thead><tbody id="channelBalanceTable"></tbody><tfoot id="channelBalanceFoot"></tfoot></table></div></section>
       <div class="layout"><section class="panel"><div class="panel-head"><div><h2>Realisasi per rincian</h2><div class="sub">Total pengeluaran dibandingkan dengan anggaran, dikelompokkan per kategori</div></div><button class="btn light" onclick="show('bud')">Anggaran</button></div><div id="bars"></div></section>
         <section class="panel"><div class="panel-head"><div><h2>Transaksi terbaru</h2><div class="sub">Bulan yang dipilih</div></div><button class="btn" onclick="openTx()">+ Catat</button></div><div id="recent"></div></section></div>
       <div class="layout"><section class="panel"><div class="panel-head"><div><h2>Rekap pemasukan per rincian</h2><div class="sub">Dikelompokkan per kategori: bulan Hijriah terpilih dan total</div></div><button class="btn light" onclick="show('inc')">Pemasukan</button></div><div class="scroll"><table class="compact"><thead><tr><th>Rincian</th><th class="amt">Bulan ini</th><th class="amt">Total</th></tr></thead><tbody id="incRecapDash"></tbody></table></div></section>
@@ -1165,11 +1167,12 @@
   <button onclick="show('bis')">Bisyaroh</button>
 </div>
 
-<div class="backdrop" id="txModal"><div class="modal"><h2 id="modalTitle">Catat pengeluaran</h2><form id="txForm"><input type="hidden" name="id"><input type="hidden" name="oldDate"><div class="form"><div class="field"><label>Tanggal Hijriah *</label><select name="hijriDay" required id="hday"></select></div><div class="field"><label>Bulan Hijriah *</label><select name="hijriMonth" required id="formHmonth"></select></div><div class="field"><label>Tahun Hijriah *</label><input name="hijriYear" type="number" min="1300" max="1600" required></div><div class="field"><label>Jumlah (Rp) *</label><input type="number" name="amount" min="1" step="1" required></div><div class="field full"><label>Uraian *</label><input name="description" required maxlength="180"></div><div class="field"><label>Kategori *</label><select name="kategori" id="formKat" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Rincian *</label><select name="rincian" id="formCat" required></select></div><div class="field"><label>Nota / penerima</label><input name="payee" maxlength="120"></div><div class="field"><label>Kanal pembayaran</label><input name="channel" maxlength="80"></div><div class="field full"><label>Catatan</label><input name="note" maxlength="180"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('txModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
+<div class="backdrop" id="txModal"><div class="modal"><h2 id="modalTitle">Catat pengeluaran</h2><form id="txForm"><input type="hidden" name="id"><input type="hidden" name="oldDate"><div class="form"><div class="field"><label>Tanggal Hijriah *</label><select name="hijriDay" required id="hday"></select></div><div class="field"><label>Bulan Hijriah *</label><select name="hijriMonth" required id="formHmonth"></select></div><div class="field"><label>Tahun Hijriah *</label><input name="hijriYear" type="number" min="1300" max="1600" required></div><div class="field"><label>Jumlah (Rp) *</label><input type="number" name="amount" min="1" step="1" required></div><div class="field full"><label>Uraian *</label><input name="description" required maxlength="180"></div><div class="field"><label>Kategori *</label><select name="kategori" id="formKat" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Rincian *</label><select name="rincian" id="formCat" required></select></div><div class="field"><label>Nota / penerima</label><input name="payee" maxlength="120"></div><div class="field"><label>Kanal saldo *</label><select name="channel" id="txChannel" required></select></div><div class="field full"><label>Catatan</label><input name="note" maxlength="180"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('txModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
 
-<div class="backdrop" id="incModal"><div class="modal"><h2 id="incTitle">Catat pemasukan</h2><form id="incForm"><input type="hidden" name="id"><div class="form"><div class="field"><label>Tanggal Hijriah *</label><select name="hijriDay" required id="iday"></select></div><div class="field"><label>Bulan Hijriah *</label><select name="hijriMonth" required id="iMonth"></select></div><div class="field"><label>Tahun Hijriah *</label><input name="hijriYear" type="number" min="1300" max="1600" required></div><div class="field"><label>Jumlah (Rp) *</label><input type="number" name="amount" min="1" step="1" required></div><div class="field full"><label>Uraian *</label><input name="description" required maxlength="180"></div><div class="field"><label>Kategori *</label><select name="kategori" id="incKat" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Rincian *</label><input name="rincian" id="incRinc" list="incRincianList" required maxlength="80" autocomplete="off" placeholder="Pilih atau ketik rincian"><datalist id="incRincianList"></datalist></div><div class="field"><label>Diterima dari</label><input name="payee" maxlength="120"></div><div class="field"><label>Kanal penerimaan</label><input name="channel" maxlength="80"></div><div class="field full"><label>Catatan</label><input name="note" maxlength="180"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('incModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
+<div class="backdrop" id="incModal"><div class="modal"><h2 id="incTitle">Catat pemasukan</h2><form id="incForm"><input type="hidden" name="id"><div class="form"><div class="field"><label>Tanggal Hijriah *</label><select name="hijriDay" required id="iday"></select></div><div class="field"><label>Bulan Hijriah *</label><select name="hijriMonth" required id="iMonth"></select></div><div class="field"><label>Tahun Hijriah *</label><input name="hijriYear" type="number" min="1300" max="1600" required></div><div class="field"><label>Jumlah (Rp) *</label><input type="number" name="amount" min="1" step="1" required></div><div class="field full"><label>Uraian *</label><input name="description" required maxlength="180"></div><div class="field"><label>Kategori *</label><select name="kategori" id="incKat" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Rincian *</label><input name="rincian" id="incRinc" list="incRincianList" required maxlength="80" autocomplete="off" placeholder="Pilih atau ketik rincian"><datalist id="incRincianList"></datalist></div><div class="field"><label>Diterima dari</label><input name="payee" maxlength="120"></div><div class="field"><label>Kanal saldo *</label><select name="channel" id="incChannel" required></select></div><div class="field full"><label>Catatan</label><input name="note" maxlength="180"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('incModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
 
 <div class="backdrop" id="budgetModal"><div class="modal"><h2 id="budTitle">Rincian anggaran</h2><form id="budgetForm"><div class="form"><div class="field"><label>Kategori *</label><select name="kategori" required><option value="">Pilih kategori</option><option value="APB">APB</option><option value="NON APB">NON APB</option></select></div><div class="field"><label>Anggaran (Rp) *</label><input name="amount" type="number" min="0" step="1" required></div><div class="field full"><label>Nama rincian *</label><input name="name" required maxlength="80"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('budgetModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
+<div class="backdrop" id="channelModal"><div class="modal"><h2 id="channelTitle">Kelola kanal saldo</h2><form id="channelForm"><input type="hidden" name="oldName"><div class="form"><div class="field full"><label>Nama kanal *</label><input name="name" required maxlength="80" placeholder="Contoh: Tunai, Pay, Emaal"></div><div class="field full"><label>Saldo awal / saldo sebelum pencatatan (Rp) *</label><input name="opening" type="number" step="1" required value="0"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('channelModal')">Batal</button><button class="btn">Simpan kanal</button></div></form><div class="scroll" style="margin-top:18px"><table><thead><tr><th>Kanal</th><th class="amt">Saldo awal</th><th>Aksi</th></tr></thead><tbody id="channelManageTable"></tbody></table></div></div></div>
 
 <div class="backdrop" id="userModal"><div class="modal"><h2 id="userTitle">Tambah pengguna</h2><form id="userForm" autocomplete="off"><input type="hidden" name="isNew"><div class="form"><div class="field"><label>Nama pengguna *</label><input name="username" required pattern="[a-z0-9._-]{3,30}" title="3-30 karakter: huruf kecil, angka, titik, garis bawah, strip" autocapitalize="none"></div><div class="field"><label>Nama lengkap *</label><input name="name" required maxlength="80"></div><div class="field"><label>Peran *</label><select name="role"><option value="staf">Staf</option><option value="admin">Admin</option></select></div><div class="field"><label>Status</label><select name="active"><option value="1">Aktif</option><option value="0">Nonaktif</option></select></div><div class="field full"><label id="userPwLabel">Kata sandi * (min. 8 karakter)</label><input name="password" type="password" minlength="8" autocomplete="new-password"></div></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal('userModal')">Batal</button><button class="btn">Simpan</button></div></form></div></div>
 
@@ -1249,7 +1252,7 @@
   var months=['Muharam','Safar','Rabiul Awal','Rabiul Akhir','Jumadil Awal','Jumadil Akhir','Rajab','Sya’ban','Ramadan','Syawal','Zulkaidah','Zulhijah'];
   var KATS=['APB','NON APB'];
   var money=new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0});
-  var S={tx:[],inc:[],budgets:[],warnings:[],users:null,user:null,period:'',scope:'ALL',loadedAt:0,txLimit:200,incLimit:200};
+  var S={tx:[],inc:[],budgets:[],channels:[],warnings:[],users:null,user:null,period:'',scope:'ALL',loadedAt:0,txLimit:200,incLimit:200};
   var D=null; // ringkasan hasil hitung di browser
   var PAGE_SIZE=200;
   var pageText={dash:['Ringkasan pengeluaran','Rekap berdasarkan kalender Hijriah Indonesia/Kemenag.'],tx:['Pengeluaran','Catat dan kelola transaksi berdasarkan tanggal Hijriah.'],inc:['Pemasukan','Catat dana masuk berdasarkan tanggal Hijriah.'],bud:['Anggaran','Atur anggaran per kategori (APB / NON APB) dan rincian.'],usr:['Pengguna','Kelola akun yang dapat masuk ke aplikasi.'],bis:['Bisyaroh','Input bisyaroh, rekap, slip, dan arsip yang terhubung ke Pengeluaran.']};
@@ -1283,6 +1286,7 @@
     el('txForm').addEventListener('submit',saveTx);
     el('incForm').addEventListener('submit',saveInc);
     el('budgetForm').addEventListener('submit',saveBudget);
+    el('channelForm').addEventListener('submit',saveChannel);
     el('userForm').addEventListener('submit',saveUser);
     el('pwForm').addEventListener('submit',changePw);
     el('loginForm').addEventListener('submit',doLogin);
@@ -1331,7 +1335,7 @@
     el('boot').classList.add('hidden');el('login').classList.add('hidden');el('app').classList.remove('hidden');
     show('dash');
   }
-  function applyData(d){S.budgets=d.budgets||[];S.tx=d.tx||[];S.inc=d.inc||[];S.warnings=d.warnings||[];S.loadedAt=Date.now();}
+  function applyData(d){S.budgets=d.budgets||[];S.tx=d.tx||[];S.inc=d.inc||[];S.channels=d.channels||[];S.warnings=d.warnings||[];S.loadedAt=Date.now();fillChannelOptions();}
   function reload(fresh){
     var b=el('btnReload');b.disabled=true;
     api('apiLoadAll',[{fresh:!!fresh}]).then(function(d){applyData(d);renderAll();if(fresh){toast('Data dimuat ulang.');if(window.Bis)Bis.reload();}})
@@ -1408,6 +1412,25 @@
     return '<br>APB '+short(a.inc-a.life)+' · NON APB '+short(n.inc-n.life);
   }
 
+  function channelBalances(){
+    var out=(S.channels||[]).map(function(c){return {name:c.name,opening:Number(c.opening)||0,prev:Number(c.opening)||0,income:0,spent:0,end:Number(c.opening)||0};});
+    var by={};out.forEach(function(x){by[x.name]=x;});
+    function add(x,isIncome){var c=by[x.channel];if(!c)return;if(!x.hijriKey){c.prev+=(isIncome?1:-1)*x.amount;return;}var m=x.hijriKey.slice(0,7);if(m<S.period)c.prev+=(isIncome?1:-1)*x.amount;else if(m===S.period){if(isIncome)c.income+=x.amount;else c.spent+=x.amount;}}
+    S.inc.forEach(function(x){add(x,true);});S.tx.forEach(function(x){add(x,false);});
+    out.forEach(function(x){x.end=x.prev+x.income-x.spent;});return out;
+  }
+  function fillChannelOptions(){
+    var channels=S.channels||[], opts='<option value="">Pilih kanal saldo</option>'+channels.map(function(c){return '<option value="'+esc(c.name)+'">'+esc(c.name)+'</option>';}).join('');
+    ['txChannel','incChannel'].forEach(function(id){var e=el(id);if(e){var v=e.value;e.innerHTML=opts;if(channels.some(function(c){return c.name===v;}))e.value=v;}});
+  }
+  function renderChannelBalances(){
+    var rows=channelBalances(), total={prev:0,income:0,spent:0,end:0};
+    el('channelPeriod').textContent='Saldo sebelumnya dibawa ke '+monthLabel(S.period)+'; saldo akhir = saldo sebelumnya + pemasukan − pengeluaran.';
+    el('channelBalanceTable').innerHTML=rows.length?rows.map(function(x){total.prev+=x.prev;total.income+=x.income;total.spent+=x.spent;total.end+=x.end;return '<tr><td>'+esc(x.name)+'</td><td class="amt">'+money.format(x.prev)+'</td><td class="amt">'+money.format(x.income)+'</td><td class="amt">'+money.format(x.spent)+'</td><td class="amt'+(x.end<0?' neg':'')+'">'+money.format(x.end)+'</td></tr>';}).join(''):'<tr><td colspan="5" class="empty">Belum ada kanal saldo.</td></tr>';
+    el('channelBalanceFoot').innerHTML=rows.length?'<tr><td>TOTAL SALDO</td><td class="amt">'+money.format(total.prev)+'</td><td class="amt">'+money.format(total.income)+'</td><td class="amt">'+money.format(total.spent)+'</td><td class="amt'+(total.end<0?' neg':'')+'">'+money.format(total.end)+'</td></tr>':'';
+    return total.end;
+  }
+
   /* ================= TAMPILAN ================= */
   function fillDateOptions(){
     var monthOptions=months.map(function(n,i){return '<option value="'+(i+1)+'">'+n+'</option>';}).join('');
@@ -1460,18 +1483,21 @@
     el('formCat').innerHTML=html;
     el('formCat').value=found||sel||'';
   }
-  function renderAll(){options();renderDash();renderBud();renderTx();renderInc();if(S.users)renderUsers();}
+  function renderAll(){fillChannelOptions();options();renderDash();renderBud();renderTx();renderInc();if(S.users)renderUsers();}
   function renderWarn(){
     var w=(S.warnings||[]).slice();
     var nt=S.tx.filter(function(t){return !t.kategori;}).length,ni=S.inc.filter(function(t){return !t.kategori;}).length;
     var nr=S.inc.filter(function(t){return t.kategori&&!t.rincian;}).length;
+    var nc=S.tx.filter(function(t){return !String(t.channel||'').trim();}).length,niC=S.inc.filter(function(t){return !String(t.channel||'').trim();}).length;
     if(nt)w.push(nt+' pengeluaran belum punya kategori APB/NON APB, sehingga hanya terhitung pada pilihan "Semua". Pilih "Tanpa kategori" di filter tanggal pada halaman Pengeluaran lalu klik Ubah.');
     if(ni)w.push(ni+' pemasukan belum punya kategori APB/NON APB. Pilih "Tanpa kategori" di filter tanggal pada halaman Pemasukan lalu klik Ubah.');
     if(nr)w.push(nr+' pemasukan belum punya rincian (dikelompokkan sebagai "(Tanpa rincian)"). Klik Ubah pada halaman Pemasukan untuk melengkapinya.');
+    if(nc||niC)w.push((nc+niC)+' transaksi lama belum memiliki kanal saldo dan belum masuk rekap per kanal. Ubah transaksi tersebut lalu pilih kanal saldo yang sesuai.');
     var b=el('warnBox');b.style.display=w.length?'block':'none';b.innerHTML=w.map(esc).join('<br>');
   }
   function renderDash(){
     var x=D=computeDash(S.period);
+    x.balance=renderChannelBalances();
     renderWarn();
     el('spent').textContent=money.format(x.spent);
     el('count').innerHTML=x.count+' transaksi bulan Hijriah ini'+splitLine('spent',short);
@@ -1491,7 +1517,7 @@
     var br=el('bremain');br.textContent=money.format(x.budgetRemaining);br.classList.toggle('neg',x.budgetRemaining<0);
     el('bremainSub').textContent=x.budgetRemaining<0?'Realisasi melebihi total anggaran':'Realisasi '+money.format(x.budgetedSpent)+' ('+pct+'% dari total anggaran)';
     var sd=el('saldo');sd.textContent=money.format(x.balance);sd.classList.toggle('neg',x.balance<0);
-    el('saldoSub').innerHTML='Pemasukan '+money.format(x.incomeTotal)+' − pengeluaran '+money.format(x.lifetime)+splitBalance();
+    el('saldoSub').innerHTML='Total sisa dari seluruh kanal saldo untuk periode terpilih.';
     // Update Executive Hero Banner & Ring Gauge
     if(el('ehSaldo')){
       el('ehPeriod').textContent='Periode '+monthLabel(S.period)+(S.scope==='ALL'?' · Semua Kategori':' · '+S.scope);
@@ -1601,6 +1627,8 @@
     else if(a==='deleteBudget')deleteBudget(b.dataset.kat,b.dataset.name);
     else if(a==='editUser')openUser(b.dataset.u);
     else if(a==='deleteUser')deleteUser(b.dataset.u);
+    else if(a==='editChannel')editChannel(b.dataset.channel);
+    else if(a==='deleteChannel')deleteChannel(b.dataset.channel);
   }
   function show(p){
     if(p==='usr'&&!isAdmin())p='dash';
@@ -1666,6 +1694,29 @@
         S.budgets=S.budgets.filter(function(x){return bkey(x.kategori,x.name)!==bkey(kat,n);});
         toast('Rincian anggaran dihapus.');renderAll();
       }).catch(fail);
+    });
+  }
+  function openChannels(){
+    var f=el('channelForm');f.reset();f.elements.oldName.value='';f.elements.opening.value='0';
+    el('channelTitle').textContent='Kelola kanal saldo';renderChannelManagement();el('channelModal').style.display='flex';
+  }
+  function editChannel(name){
+    var c=(S.channels||[]).find(function(x){return x.name===name;});if(!c)return;
+    var f=el('channelForm');f.reset();f.elements.oldName.value=c.name;f.elements.name.value=c.name;f.elements.opening.value=c.opening||0;
+    el('channelTitle').textContent='Ubah kanal saldo';
+  }
+  function renderChannelManagement(){
+    el('channelManageTable').innerHTML=(S.channels||[]).map(function(c){
+      return '<tr><td>'+esc(c.name)+'</td><td class="amt">'+money.format(Number(c.opening)||0)+'</td><td><button class="btn light" type="button" data-act="editChannel" data-channel="'+esc(c.name)+'">Ubah</button>'+' <button class="btn del" type="button" data-act="deleteChannel" data-channel="'+esc(c.name)+'">Hapus</button>'+'</td></tr>';
+    }).join('')||'<tr><td colspan="3" class="empty">Belum ada kanal.</td></tr>';
+  }
+  function saveChannel(e){
+    e.preventDefault();var f=e.currentTarget,d={oldName:f.elements.oldName.value,name:f.elements.name.value.trim(),opening:Number(f.elements.opening.value)};busy(f,true);
+    api('apiSaveChannel',[d]).then(function(r){S.channels=r.channels||[];fillChannelOptions();renderChannelManagement();closeModal('channelModal');toast('Kanal saldo tersimpan.');reload(true);}).catch(fail).finally(function(){busy(f,false);});
+  }
+  function deleteChannel(name){
+    window.Bis.ask({title:'Hapus kanal saldo?',msg:'Hapus kanal "'+name+'"? Kanal yang masih digunakan transaksi tidak dapat dihapus.',ok:'Hapus',danger:1}).then(function(ok){
+      if(!ok)return;api('apiDeleteChannel',[name]).then(function(r){S.channels=r.channels||[];fillChannelOptions();renderChannelManagement();renderAll();toast('Kanal saldo dihapus.');}).catch(fail);
     });
   }
   function resetFilter(){el('search').value='';el('catFilter').value='';el('dateFilter').value='';S.txLimit=PAGE_SIZE;renderTx();}
